@@ -103,7 +103,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/05/ElasticSearch入门/" data-id="cjmvxhngy0001ygve137b8ycx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/05/ElasticSearch入门/" data-id="cjmvxj8gd0000hwveqvaf0q2f" class="article-share-link">Share</a>
       
       
     </footer>
@@ -148,7 +148,57 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/05/hello-world/" data-id="cjmvxhnh10002ygve9q6tnotz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/05/hello-world/" data-id="cjmvxj8gl0002hwveetsbhzdr" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-jvm之垃圾收集器" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/04/jvm之垃圾收集器/" class="article-date">
+  <time datetime="2018-10-03T16:40:27.000Z" itemprop="datePublished">2018-10-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/04/jvm之垃圾收集器/">jvm之垃圾收集器</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;前面几篇文章分别介绍了JVM的内存布局、以及JVM垃圾回收算法和JVM对象生命状态的判断等。今天主要介绍下JVM的垃圾回收器。主流的JVM垃圾回收的实现。下图是HotSpot的垃圾收集器。<br><img src="/2018/10/04/jvm之垃圾收集器/an.png" alt="安装目录"><br>&nbsp;&nbsp;&nbsp;&nbsp;阐述下，通过java -version命令可以看到JVM处于何种模式下运行；分为Server和Client模式。Server模式下主要是使用Parallel Scavenge收集新生代，使用Parallel Old收集老年代。Client模式下主要是使用Serial收集新生代、使用Serial Old收集老年代。 </p>
+<h3 id="Serial收集器"><a href="#Serial收集器" class="headerlink" title="Serial收集器"></a>Serial收集器</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;下面的图片是Serial收集器的示意图。新生代使用复制算法，老年代使用标记清除算法收集垃圾。Serial是串行的意思。也就是说只存在一个线程对垃圾进行收集。是Client模式下的默认的垃圾收集器。单线程下的垃圾收集。Stop-the-World的时间较长。<br><img src="/2018/10/04/jvm之垃圾收集器/serial.jpg" alt="安装目录"></p>
+<h3 id="ParNew收集器"><a href="#ParNew收集器" class="headerlink" title="ParNew收集器"></a>ParNew收集器</h3><p><img src="/2018/10/04/jvm之垃圾收集器/parnew.jpg" alt="安装目录"><br>&nbsp;&nbsp;&nbsp;&nbsp;上图是ParNew收集器的示意图。可以看出是Serial垃圾收集器的并发版本。它可以与CMS收集器配合使用。它第一次实现了垃圾收集器线程和工作线程同时的使用。在单核的情况下它不一定比Serial性能高。但是多核的情况下就不一样啦。 </p>
+<h3 id="Parallel-Scavenge收集器"><a href="#Parallel-Scavenge收集器" class="headerlink" title="Parallel Scavenge收集器"></a>Parallel Scavenge收集器</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;它和ParNew也是一样的。并发垃圾收集。但是他注重于CPU的吞吐量。而CMS注重垃圾收集是停顿时间长短。可以使用参数来控制垃圾收集的最大时间。</p>
+<h3 id="Serial-Old收集器"><a href="#Serial-Old收集器" class="headerlink" title="Serial Old收集器"></a>Serial Old收集器</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;它同样是一个单线程的收集器。使用标记整理算法收集老年代。<br><img src="/2018/10/04/jvm之垃圾收集器/old.jpg" alt="安装目录"></p>
+<h3 id="Parallel-Old收集器"><a href="#Parallel-Old收集器" class="headerlink" title="Parallel Old收集器"></a>Parallel Old收集器</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;它和Parallel Scavenge也是一样的。并发垃圾收集。但是它使用标记整理算法收集老年代。<br><img src="/2018/10/04/jvm之垃圾收集器/old2.jpg" alt="安装目录"></p>
+<h3 id="CMS收集器"><a href="#CMS收集器" class="headerlink" title="CMS收集器"></a>CMS收集器</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;CMS(Concurrent Mark Sweep),是一种获取最短回收停顿时间为目标的垃圾收集器。下图是CMS收集器的四个过程。在并发标记和并发清除阶段是和工作线程一起运行的。</p>
+<h4 id="1-初始标记"><a href="#1-初始标记" class="headerlink" title="1 初始标记"></a>1 初始标记</h4><pre><code>该阶段会产生stop-the-world;这个阶段只是标记下对象直接关联到GC Roots.
+</code></pre><h4 id="2-并发标记"><a href="#2-并发标记" class="headerlink" title="2 并发标记"></a>2 并发标记</h4><pre><code>标记GC Roots Trancing.这个阶段主要是标记那些之前对象到GC Roots的引用为空，但是后续有发生了变化的对象。该阶段的标记时间一般比初始标记时间稍微长些。但是比重新标记短。
+</code></pre><h4 id="3-重新标记"><a href="#3-重新标记" class="headerlink" title="3 重新标记"></a>3 重新标记</h4><pre><code>该阶段会产生stop-the-world
+</code></pre><h4 id="4-并发清除"><a href="#4-并发清除" class="headerlink" title="4 并发清除"></a>4 并发清除</h4><h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><pre><code>1 CMS收集器对CPU资源非常敏感
+2 无法处理浮动垃圾
+3 产生诸多的内存碎片（标记清除法的缺陷）
+</code></pre><h4 id="G1收集器"><a href="#G1收集器" class="headerlink" title="G1收集器"></a>G1收集器</h4><pre><code>对于该收集器是目前最为先进的java垃圾回收器。内容较为复杂。待后续说明。
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/10/04/jvm之垃圾收集器/" data-id="cjmvxj8gq0003hwveyvhv6h9b" class="article-share-link">Share</a>
       
       
     </footer>
@@ -206,7 +256,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/09/18/JVM-01-之java内存区域划分/" data-id="cjmvxhngs0000ygvem8l466ca" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/09/18/JVM-01-之java内存区域划分/" data-id="cjmvxj8gi0001hwve7q8c4k6k" class="article-share-link">Share</a>
       
       
     </footer>
@@ -251,6 +301,10 @@
         
           <li>
             <a href="/2018/10/05/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/04/jvm之垃圾收集器/">jvm之垃圾收集器</a>
           </li>
         
           <li>
