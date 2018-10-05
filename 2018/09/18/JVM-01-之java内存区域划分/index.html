@@ -3,15 +3,22 @@
 <head>
   <meta charset="utf-8">
   
-  <title>GoSaint Blogs</title>
+  <title>JVM_01 之java内存区域划分 | GoSaint Blogs</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="GoSaint Blogs">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="java虚拟机运行时数据区内存划分&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;对于java虚拟机而言，在JVM执行java程序的过程中会将自己管理的内存区域划分为几个不同的位置，以便于管理。有的区域随着JVM的启动而分配内存，有的区域随着线程的启动创建空间，随着线程的结束而释放空间。就JVM而言，运行时数据区划分为程序计数器，本地方法栈，方法区，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM_01 之java内存区域划分">
+<meta property="og:url" content="http://yoursite.com/2018/09/18/JVM-01-之java内存区域划分/index.html">
 <meta property="og:site_name" content="GoSaint Blogs">
+<meta property="og:description" content="java虚拟机运行时数据区内存划分&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;对于java虚拟机而言，在JVM执行java程序的过程中会将自己管理的内存区域划分为几个不同的位置，以便于管理。有的区域随着JVM的启动而分配内存，有的区域随着线程的启动创建空间，随着线程的结束而释放空间。就JVM而言，运行时数据区划分为程序计数器，本地方法栈，方法区，">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2018/09/18/JVM-01-之java内存区域划分/timg.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/09/18/JVM-01-之java内存区域划分/222.jpg">
+<meta property="og:updated_time" content="2018-09-22T12:19:35.558Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GoSaint Blogs">
+<meta name="twitter:title" content="JVM_01 之java内存区域划分">
+<meta name="twitter:description" content="java虚拟机运行时数据区内存划分&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;对于java虚拟机而言，在JVM执行java程序的过程中会将自己管理的内存区域划分为几个不同的位置，以便于管理。有的区域随着JVM的启动而分配内存，有的区域随着线程的启动创建空间，随着线程的结束而释放空间。就JVM而言，运行时数据区划分为程序计数器，本地方法栈，方法区，">
+<meta name="twitter:image" content="http://yoursite.com/2018/09/18/JVM-01-之java内存区域划分/timg.jpg">
   
     <link rel="alternate" href="/atom.xml" title="GoSaint Blogs" type="application/atom+xml">
   
@@ -60,105 +67,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-ElasticSearch入门" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/10/05/ElasticSearch入门/" class="article-date">
-  <time datetime="2018-10-05T11:21:04.000Z" itemprop="datePublished">2018-10-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/05/ElasticSearch入门/">ElasticSearch入门</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;这篇文章主要是为了复习下对ElasticSearch。关于全文检索的知识这里暂且不再阐述。</p>
-<h2 id="安装ES"><a href="#安装ES" class="headerlink" title="安装ES"></a>安装ES</h2><h3 id="下图是ES下载后的解压目录"><a href="#下图是ES下载后的解压目录" class="headerlink" title="下图是ES下载后的解压目录"></a>下图是ES下载后的解压目录</h3><p><img src="/2018/10/05/ElasticSearch入门/es.jpg" alt="安装目录"></p>
-<h3 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;运行elasticsearch.bat，这篇文章环境实在windows目录下面。如下图说明启动成功啦！<br><img src="/2018/10/05/ElasticSearch入门/stat.jpg" alt="stat"></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;可以看到服务端监听的端口是9300.但是这个9300端口是RestAPI向外暴露的端口，我们应该访问的是localhost:9200;就会出现如下的界面：</p>
-<p><img src="/2018/10/05/ElasticSearch入门/local.jpg" alt="local"><br>&nbsp;&nbsp;&nbsp;&nbsp;上面代码中，请求9200端口，Elastic 返回一个 JSON 对象，包含当前节点、集群、版本等信息。</p>
-<h2 id="kibana的使用"><a href="#kibana的使用" class="headerlink" title="kibana的使用"></a>kibana的使用</h2><p>kibana是ES操作的图形化界面，下载对应版本的kibana安装。进入bin目录，运行kibana.bat。如果出现如下的界面，说明kibana.启动成功。</p>
-<p><img src="/2018/10/05/ElasticSearch入门/kibana.jpg" alt="kibana"><br>访问localhost:5601,如下的界面：</p>
-<p><img src="/2018/10/05/ElasticSearch入门/222.jpg" alt="222"><br>点击Dev Tools</p>
-<p><img src="/2018/10/05/ElasticSearch入门/kkk.png" alt="kkk"><br>在上述中可以进行操作。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># PUT表示修改修改修改,如果不存在该数据，则表示添加</span><br><span class="line">PUT /demo/user/1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;gosaint&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>看如下操作的结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot;: &quot;demo&quot;,</span><br><span class="line">  &quot;_type&quot;: &quot;user&quot;,</span><br><span class="line">  &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">  &quot;_version&quot;: 1,</span><br><span class="line">  &quot;result&quot;: &quot;created&quot;,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 2,</span><br><span class="line">    &quot;successful&quot;: 1,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;_seq_no&quot;: 0,</span><br><span class="line">  &quot;_primary_term&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后再来获取：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#GET表示获取数据，都是以RESTful格式对数据进行操作的</span><br><span class="line">GET /demo/user/1</span><br></pre></td></tr></table></figure>
-<p>看如下操作的结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot;: &quot;demo&quot;,</span><br><span class="line">  &quot;_type&quot;: &quot;user&quot;,</span><br><span class="line">  &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">  &quot;_version&quot;: 1,</span><br><span class="line">  &quot;found&quot;: true,</span><br><span class="line">  &quot;_source&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: &quot;gosaint&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/05/ElasticSearch入门/" data-id="cjmvxgqwq0000dwvexxknfd68" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/10/05/hello-world/" class="article-date">
-  <time datetime="2018-10-05T10:15:54.634Z" itemprop="datePublished">2018-10-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/05/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/05/hello-world/" data-id="cjmvxgqx40002dwvevnhyl0jl" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-JVM-01-之java内存区域划分" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-JVM-01-之java内存区域划分" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/09/18/JVM-01-之java内存区域划分/" class="article-date">
   <time datetime="2018-09-18T13:38:41.000Z" itemprop="datePublished">2018-09-18</time>
@@ -171,8 +80,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/18/JVM-01-之java内存区域划分/">JVM_01 之java内存区域划分</a>
+    <h1 class="article-title" itemprop="name">
+      JVM_01 之java内存区域划分
     </h1>
   
 
@@ -212,10 +121,23 @@
     </footer>
   </div>
   
-</article>
-
+    
+<nav id="article-nav">
+  
+    <a href="/2018/10/05/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Hello World
+        
+      </div>
+    </a>
+  
+  
+</nav>
 
   
+</article>
 
 </section>
         
