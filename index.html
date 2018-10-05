@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>GoSaint Blogs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="GoSaint Blogs">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="GoSaint Blogs">
+<meta property="og:locale" content="default">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GoSaint Blogs">
+  
+    <link rel="alternate" href="/atom.xml" title="GoSaint Blogs" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">GoSaint Blogs</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-ElasticSearch入门" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/05/ElasticSearch入门/" class="article-date">
+  <time datetime="2018-10-05T11:21:04.000Z" itemprop="datePublished">2018-10-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/05/ElasticSearch入门/">ElasticSearch入门</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;这篇文章主要是为了复习下对ElasticSearch。关于全文检索的知识这里暂且不再阐述。</p>
+<h2 id="安装ES"><a href="#安装ES" class="headerlink" title="安装ES"></a>安装ES</h2><h3 id="下图是ES下载后的解压目录"><a href="#下图是ES下载后的解压目录" class="headerlink" title="下图是ES下载后的解压目录"></a>下图是ES下载后的解压目录</h3><p><img src="/2018/10/05/ElasticSearch入门/es.jpg" alt="安装目录"></p>
+<h3 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;运行elasticsearch.bat，这篇文章环境实在windows目录下面。如下图说明启动成功啦！<br><img src="/2018/10/05/ElasticSearch入门/stat.jpg" alt="stat"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;可以看到服务端监听的端口是9300.但是这个9300端口是RestAPI向外暴露的端口，我们应该访问的是localhost:9200;就会出现如下的界面：</p>
+<p><img src="/2018/10/05/ElasticSearch入门/local.jpg" alt="local"><br>&nbsp;&nbsp;&nbsp;&nbsp;上面代码中，请求9200端口，Elastic 返回一个 JSON 对象，包含当前节点、集群、版本等信息。</p>
+<h2 id="kibana的使用"><a href="#kibana的使用" class="headerlink" title="kibana的使用"></a>kibana的使用</h2><p>kibana是ES操作的图形化界面，下载对应版本的kibana安装。进入bin目录，运行kibana.bat。如果出现如下的界面，说明kibana.启动成功。</p>
+<p><img src="/2018/10/05/ElasticSearch入门/kibana.jpg" alt="kibana"><br>访问localhost:5601,如下的界面：</p>
+<p><img src="/2018/10/05/ElasticSearch入门/222.jpg" alt="222"><br>点击Dev Tools</p>
+<p><img src="/2018/10/05/ElasticSearch入门/kkk.png" alt="kkk"><br>在上述中可以进行操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># PUT表示修改修改修改,如果不存在该数据，则表示添加</span><br><span class="line">PUT /demo/user/1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;gosaint&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看如下操作的结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot;: &quot;demo&quot;,</span><br><span class="line">  &quot;_type&quot;: &quot;user&quot;,</span><br><span class="line">  &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">  &quot;_version&quot;: 1,</span><br><span class="line">  &quot;result&quot;: &quot;created&quot;,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 2,</span><br><span class="line">    &quot;successful&quot;: 1,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;_seq_no&quot;: 0,</span><br><span class="line">  &quot;_primary_term&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后再来获取：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#GET表示获取数据，都是以RESTful格式对数据进行操作的</span><br><span class="line">GET /demo/user/1</span><br></pre></td></tr></table></figure>
+<p>看如下操作的结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot;: &quot;demo&quot;,</span><br><span class="line">  &quot;_type&quot;: &quot;user&quot;,</span><br><span class="line">  &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">  &quot;_version&quot;: 1,</span><br><span class="line">  &quot;found&quot;: true,</span><br><span class="line">  &quot;_source&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: &quot;gosaint&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/10/05/ElasticSearch入门/" data-id="cjmvy56ut0000xovex5uteokm" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/05/hello-world/" class="article-date">
+  <time datetime="2018-10-05T10:15:54.634Z" itemprop="datePublished">2018-10-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/05/hello-world/">Hello World</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/10/05/hello-world/" data-id="cjmvy56v20002xovefpyvac2f" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-jvm之垃圾收集器" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/04/jvm之垃圾收集器/" class="article-date">
+  <time datetime="2018-10-03T16:40:27.000Z" itemprop="datePublished">2018-10-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/04/jvm之垃圾收集器/">jvm之垃圾收集器</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;前面几篇文章分别介绍了JVM的内存布局、以及JVM垃圾回收算法和JVM对象生命状态的判断等。今天主要介绍下JVM的垃圾回收器。主流的JVM垃圾回收的实现。下图是HotSpot的垃圾收集器。<br><img src="/2018/10/04/jvm之垃圾收集器/an.png" alt="安装目录"><br>&nbsp;&nbsp;&nbsp;&nbsp;阐述下，通过java -version命令可以看到JVM处于何种模式下运行；分为Server和Client模式。Server模式下主要是使用Parallel Scavenge收集新生代，使用Parallel Old收集老年代。Client模式下主要是使用Serial收集新生代、使用Serial Old收集老年代。 </p>
+<h3 id="Serial收集器"><a href="#Serial收集器" class="headerlink" title="Serial收集器"></a>Serial收集器</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;下面的图片是Serial收集器的示意图。新生代使用复制算法，老年代使用标记清除算法收集垃圾。Serial是串行的意思。也就是说只存在一个线程对垃圾进行收集。是Client模式下的默认的垃圾收集器。单线程下的垃圾收集。Stop-the-World的时间较长。<br><img src="/2018/10/04/jvm之垃圾收集器/serial.jpg" alt="安装目录"></p>
+<h3 id="ParNew收集器"><a href="#ParNew收集器" class="headerlink" title="ParNew收集器"></a>ParNew收集器</h3><p><img src="/2018/10/04/jvm之垃圾收集器/parnew.jpg" alt="安装目录"><br>&nbsp;&nbsp;&nbsp;&nbsp;上图是ParNew收集器的示意图。可以看出是Serial垃圾收集器的并发版本。它可以与CMS收集器配合使用。它第一次实现了垃圾收集器线程和工作线程同时的使用。在单核的情况下它不一定比Serial性能高。但是多核的情况下就不一样啦。 </p>
+<h3 id="Parallel-Scavenge收集器"><a href="#Parallel-Scavenge收集器" class="headerlink" title="Parallel Scavenge收集器"></a>Parallel Scavenge收集器</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;它和ParNew也是一样的。并发垃圾收集。但是他注重于CPU的吞吐量。而CMS注重垃圾收集是停顿时间长短。可以使用参数来控制垃圾收集的最大时间。</p>
+<h3 id="Serial-Old收集器"><a href="#Serial-Old收集器" class="headerlink" title="Serial Old收集器"></a>Serial Old收集器</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;它同样是一个单线程的收集器。使用标记整理算法收集老年代。<br><img src="/2018/10/04/jvm之垃圾收集器/old.jpg" alt="安装目录"></p>
+<h3 id="Parallel-Old收集器"><a href="#Parallel-Old收集器" class="headerlink" title="Parallel Old收集器"></a>Parallel Old收集器</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;它和Parallel Scavenge也是一样的。并发垃圾收集。但是它使用标记整理算法收集老年代。<br><img src="/2018/10/04/jvm之垃圾收集器/old2.jpg" alt="安装目录"></p>
+<h3 id="CMS收集器"><a href="#CMS收集器" class="headerlink" title="CMS收集器"></a>CMS收集器</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;CMS(Concurrent Mark Sweep),是一种获取最短回收停顿时间为目标的垃圾收集器。下图是CMS收集器的四个过程。在并发标记和并发清除阶段是和工作线程一起运行的。</p>
+<h4 id="1-初始标记"><a href="#1-初始标记" class="headerlink" title="1 初始标记"></a>1 初始标记</h4><pre><code>该阶段会产生stop-the-world;这个阶段只是标记下对象直接关联到GC Roots.
+</code></pre><h4 id="2-并发标记"><a href="#2-并发标记" class="headerlink" title="2 并发标记"></a>2 并发标记</h4><pre><code>标记GC Roots Trancing.这个阶段主要是标记那些之前对象到GC Roots的引用为空，但是后续有发生了变化的对象。该阶段的标记时间一般比初始标记时间稍微长些。但是比重新标记短。
+</code></pre><h4 id="3-重新标记"><a href="#3-重新标记" class="headerlink" title="3 重新标记"></a>3 重新标记</h4><pre><code>该阶段会产生stop-the-world
+</code></pre><h4 id="4-并发清除"><a href="#4-并发清除" class="headerlink" title="4 并发清除"></a>4 并发清除</h4><h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><pre><code>1 CMS收集器对CPU资源非常敏感
+2 无法处理浮动垃圾
+3 产生诸多的内存碎片（标记清除法的缺陷）
+</code></pre><h4 id="G1收集器"><a href="#G1收集器" class="headerlink" title="G1收集器"></a>G1收集器</h4><pre><code>对于该收集器是目前最为先进的java垃圾回收器。内容较为复杂。待后续说明。
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/10/04/jvm之垃圾收集器/" data-id="cjmvy56v70003xoveejdb6sv2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-JVM-01-之java内存区域划分" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/09/18/JVM-01-之java内存区域划分/" class="article-date">
+  <time datetime="2018-09-18T13:38:41.000Z" itemprop="datePublished">2018-09-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/18/JVM-01-之java内存区域划分/">JVM_01 之java内存区域划分</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="java虚拟机运行时数据区内存划分"><a href="#java虚拟机运行时数据区内存划分" class="headerlink" title="java虚拟机运行时数据区内存划分"></a>java虚拟机运行时数据区内存划分</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于java虚拟机而言，在JVM执行java程序的过程中会将自己管理的内存区域划分为几个不同的位置，以便于管理。有的区域随着JVM的启动而分配内存，有的区域随着线程的启动创建空间，随着线程的结束而释放空间。就JVM而言，运行时数据区划分为程序计数器，本地方法栈，方法区，堆空间，java虚拟机栈5块区域。<br>看如下图所示：<br><img src="/2018/09/18/JVM-01-之java内存区域划分/timg.jpg" alt="222"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对如上区域做一个分析汇总</p>
+<p><img src="/2018/09/18/JVM-01-之java内存区域划分/222.jpg" alt="222"></p>
+<h3 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一块较小的内存，它可以看做是当前线程所执行字节码的行号指示器。字节码的解释工作都是通过改变程序计数器的值来获取下一条所要执行的指令。程序的分支、循环、跳转、异常处理等基础功能都要依赖这个计数器完成。因此每一个线程都有一个程序计数器，他是线程私有的，不会出现任何的内存溢出错误。</p>
+<h3 id="java虚拟机栈"><a href="#java虚拟机栈" class="headerlink" title="java虚拟机栈"></a>java虚拟机栈</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;java虚拟机栈描述的是java方法的内存模型。存储数据如下：<br>局部变量表：主要是编译器可知的基本数据类型，对象引用，返回值地址。由于局部变量表的数据在编译器可知，因此一个方法在栈中分配多大的内存就已经在编译器可知啦。会出现StackOverflowError,以及OutOfMemoryError。</p>
+<h3 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本地方法栈和java虚拟机栈的情况基本一致。只不过本地方法栈描述的是native方法的内存模型。会出现StackOverflowError,以及OutOfMemoryError。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关于栈溢出的错误代码实例如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StackOver</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		bad(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">bad</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;	</span><br><span class="line">	    <span class="keyword">return</span> (n==<span class="number">0</span>)? <span class="number">0</span>: bad(n/<span class="number">3</span>+<span class="number">1</span>)+n-<span class="number">1</span>;          </span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>错误结果如下所示：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Exception in thread <span class="string">"main"</span> java.lang.StackOverflowError</span><br><span class="line">	at jvm.StackOver.bad(StackOver.java:<span class="number">10</span>)</span><br><span class="line">	at jvm.StackOver.bad(StackOver.java:<span class="number">10</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="java堆"><a href="#java堆" class="headerlink" title="java堆"></a>java堆</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所有的对象实例以及数组都要在堆上分配内存。是垃圾收集器管理的主要区域。因此java对也称之为GC堆，我习惯上称为垃圾堆。由于现在的JVM都采用分带收集算法收集垃圾，java堆可以细分为：新生代和老年代。新生代又分为：Eden,from Survivor 、 to Survivor.java堆在物理上不是连续的，只要在逻辑上连续即可。堆的大小可以通过设置Xmx 和 Xms确定。</p>
+<h3 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存储了jvm加载的类信息、常量、静态变量、以及即时编译器编译的类数据。JVM也会对这部分内存进行垃圾回收的管理。这部分也被称之为永久代，这是因为这部分的垃圾很少被收集。也会出现OutOfMemoryError。</p>
+<h3 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;运行时常量池是方法区的一部分，class文件中除了有类的版本，字段、方法、接口等信息外，还有一部分就是运行时常量池。用于存放编译器生成的字面量和符号引用等信息。也会出现OutOfMemoryError。</p>
+<h3 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接内存并不是方JVM的一部分，也不是运行时数据区的一部分，但是也会发生OutOfMemoryError。关于这部分内容，我就不做深入研究啦。</p>
+<h3 id="OutOfMemoryError"><a href="#OutOfMemoryError" class="headerlink" title="OutOfMemoryError"></a>OutOfMemoryError</h3><p>1 堆溢出<br>程序实例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HeapOOM</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">OOMObject</span> </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		List&lt;OOMObject&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">		<span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">			list.add(<span class="keyword">new</span> OOMObject());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>设置运行参数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-Dfile.encoding=UTF-8   		# 文件编码 </span><br><span class="line">-Xms20m -Xmx20m				# 堆的最大空间</span><br><span class="line">-XX:+HeapDumpOnOutOfMemoryError         # 堆溢出快照</span><br><span class="line">-XX:HeapDumpPath=D:\Dumping		# 堆快照文件存储的位置</span><br><span class="line">-XX:SurvivorRatio=<span class="number">8</span></span><br></pre></td></tr></table></figure>
+<p>在这说明一点将堆的最大和最小内存设置相同是避免堆内存的自动扩展。<br>错误结果如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Exception in thread <span class="string">"main"</span> java.lang.OutOfMemoryError: Java heap space</span><br><span class="line">	at java.util.Arrays.copyOf(Arrays.java:<span class="number">3210</span>)</span><br><span class="line">	at java.util.Arrays.copyOf(Arrays.java:<span class="number">3181</span>)</span><br><span class="line">	at java.util.ArrayList.grow(ArrayList.java:<span class="number">265</span>)</span><br><span class="line">	at java.util.ArrayList.ensureExplicitCapacity(ArrayList.java:<span class="number">239</span>)</span><br><span class="line">	at java.util.ArrayList.ensureCapacityInternal(ArrayList.java:<span class="number">231</span>)</span><br><span class="line">	at java.util.ArrayList.add(ArrayList.java:<span class="number">462</span>)</span><br><span class="line">	at jvm.HeapOOM.main(HeapOOM.java:<span class="number">14</span>)</span><br></pre></td></tr></table></figure></p>
+<p>2 栈溢出<br>关于这部分栈溢出的代码，在上述讲到栈溢出的时候已经贴出了，即StackOverflowError.这部分很难出现OutOfMemoryError.</p>
+<p>3 方法区和运行时常量池的溢出<br>关于这部分栈溢出的代码，在上述讲到栈溢出的时候已经贴出了，即StackOverflowError.这部分很难出现OutOfMemoryError.<br>下面的测试针对的是字符串常量池，因为字符串常量池已经存在于堆空间啦。所以这部分的测试也可以看成是堆溢出的测试，在java7之前，字符串常量池属于方法区的，7之后就在堆上分配内存啦。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RuntimeOOM</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">      </span><br><span class="line">        List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;String&gt;();  </span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;  </span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;  </span><br><span class="line">            list.add(String.valueOf(i++).intern());  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>设置启动参数：-Xms5m -Xmx5m<br>报错如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Exception in thread <span class="string">"main"</span> java.lang.OutOfMemoryError: GC overhead limit exceeded</span><br><span class="line">	at java.lang.Integer.toString(Integer.java:<span class="number">401</span>)</span><br><span class="line">	at java.lang.String.valueOf(String.java:<span class="number">3099</span>)</span><br><span class="line">	at jvm.RuntimeOOM.main(RuntimeOOM.java:<span class="number">13</span>)</span><br></pre></td></tr></table></figure></p>
+<p>GC overhead limit exceeded这个意思是说GC时间过长啦。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sun官方说明：并行/并发回收器在GC回收时间过长时会抛出OutOfMemroyError。过长的定义是，超过<span class="number">98</span>%的时间用来做GC并且回收了不到<span class="number">2</span>%的堆内存。用来避免内存过小造成应用不能正常工作。</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/09/18/JVM-01-之java内存区域划分/" data-id="cjmvy56uz0001xove31pkb64o" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/10/05/ElasticSearch入门/">ElasticSearch入门</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/05/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/04/jvm之垃圾收集器/">jvm之垃圾收集器</a>
+          </li>
+        
+          <li>
+            <a href="/2018/09/18/JVM-01-之java内存区域划分/">JVM_01 之java内存区域划分</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 gosaint<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

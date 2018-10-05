@@ -1,7 +1,95 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> JVM_01 之java内存区域划分 · GoSaint Blogs</title><meta name="description" content="A Blog Powered By Hexo"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="short icon" href="/favicon.png"><link rel="stylesheet" href="/css/jekyll.css"><!--[if lt IE 9]>
-<script src="js/html5shiv.min.js"></script>
-<script src="js/respond.min.js"></script>
-<![endif]--></head><body><header class="row-flex-row limit-width vh-center"><a href="/" class="logo"><img src="/favicon.png"></a><nav><ul class="nav-list"><li class="nav-list-item"><a href="/" class="nav-link">Home</a></li><li class="nav-list-item"><a href="/archives/" class="nav-link active">   Blog</a></li><li class="nav-list-item"><a href="/atom.xml" class="nav-link">rss</a></li></ul></nav></header><div class="container limit-width"><section class="row-flex-row"><div class="post"><article class="post-block"><h2 class="post-title"><a href="/2018/09/18/JVM-01-之java内存区域划分/" class="post-title-link">JVM_01 之java内存区域划分</a></h2><div class="post-meta"><div class="post-time">Tuesday, September 18th 2018</div></div><div class="post-content"><h2 id="java虚拟机运行时数据区内存划分"><a href="#java虚拟机运行时数据区内存划分" class="headerlink" title="java虚拟机运行时数据区内存划分"></a>java虚拟机运行时数据区内存划分</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于java虚拟机而言，在JVM执行java程序的过程中会将自己管理的内存区域划分为几个不同的位置，以便于管理。有的区域随着JVM的启动而分配内存，有的区域随着线程的启动创建空间，随着线程的结束而释放空间。就JVM而言，运行时数据区划分为程序计数器，本地方法栈，方法区，堆空间，java虚拟机栈5块区域。<br>看如下图所示：<br><img src="/2018/09/18/JVM-01-之java内存区域划分/timg.jpg" alt="222"></p>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>JVM_01 之java内存区域划分 | GoSaint Blogs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="java虚拟机运行时数据区内存划分&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;对于java虚拟机而言，在JVM执行java程序的过程中会将自己管理的内存区域划分为几个不同的位置，以便于管理。有的区域随着JVM的启动而分配内存，有的区域随着线程的启动创建空间，随着线程的结束而释放空间。就JVM而言，运行时数据区划分为程序计数器，本地方法栈，方法区，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM_01 之java内存区域划分">
+<meta property="og:url" content="http://yoursite.com/2018/09/18/JVM-01-之java内存区域划分/index.html">
+<meta property="og:site_name" content="GoSaint Blogs">
+<meta property="og:description" content="java虚拟机运行时数据区内存划分&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;对于java虚拟机而言，在JVM执行java程序的过程中会将自己管理的内存区域划分为几个不同的位置，以便于管理。有的区域随着JVM的启动而分配内存，有的区域随着线程的启动创建空间，随着线程的结束而释放空间。就JVM而言，运行时数据区划分为程序计数器，本地方法栈，方法区，">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2018/09/18/JVM-01-之java内存区域划分/timg.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/09/18/JVM-01-之java内存区域划分/222.jpg">
+<meta property="og:updated_time" content="2018-09-22T12:19:35.558Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JVM_01 之java内存区域划分">
+<meta name="twitter:description" content="java虚拟机运行时数据区内存划分&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;对于java虚拟机而言，在JVM执行java程序的过程中会将自己管理的内存区域划分为几个不同的位置，以便于管理。有的区域随着JVM的启动而分配内存，有的区域随着线程的启动创建空间，随着线程的结束而释放空间。就JVM而言，运行时数据区划分为程序计数器，本地方法栈，方法区，">
+<meta name="twitter:image" content="http://yoursite.com/2018/09/18/JVM-01-之java内存区域划分/timg.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="GoSaint Blogs" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">GoSaint Blogs</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-JVM-01-之java内存区域划分" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/09/18/JVM-01-之java内存区域划分/" class="article-date">
+  <time datetime="2018-09-18T13:38:41.000Z" itemprop="datePublished">2018-09-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JVM_01 之java内存区域划分
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="java虚拟机运行时数据区内存划分"><a href="#java虚拟机运行时数据区内存划分" class="headerlink" title="java虚拟机运行时数据区内存划分"></a>java虚拟机运行时数据区内存划分</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于java虚拟机而言，在JVM执行java程序的过程中会将自己管理的内存区域划分为几个不同的位置，以便于管理。有的区域随着JVM的启动而分配内存，有的区域随着线程的启动创建空间，随着线程的结束而释放空间。就JVM而言，运行时数据区划分为程序计数器，本地方法栈，方法区，堆空间，java虚拟机栈5块区域。<br>看如下图所示：<br><img src="/2018/09/18/JVM-01-之java内存区域划分/timg.jpg" alt="222"></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对如上区域做一个分析汇总</p>
 <p><img src="/2018/09/18/JVM-01-之java内存区域划分/222.jpg" alt="222"></p>
 <h3 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
@@ -23,7 +111,114 @@
 <p>3 方法区和运行时常量池的溢出<br>关于这部分栈溢出的代码，在上述讲到栈溢出的时候已经贴出了，即StackOverflowError.这部分很难出现OutOfMemoryError.<br>下面的测试针对的是字符串常量池，因为字符串常量池已经存在于堆空间啦。所以这部分的测试也可以看成是堆溢出的测试，在java7之前，字符串常量池属于方法区的，7之后就在堆上分配内存啦。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RuntimeOOM</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">      </span><br><span class="line">        List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;String&gt;();  </span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;  </span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;  </span><br><span class="line">            list.add(String.valueOf(i++).intern());  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>设置启动参数：-Xms5m -Xmx5m<br>报错如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Exception in thread <span class="string">"main"</span> java.lang.OutOfMemoryError: GC overhead limit exceeded</span><br><span class="line">	at java.lang.Integer.toString(Integer.java:<span class="number">401</span>)</span><br><span class="line">	at java.lang.String.valueOf(String.java:<span class="number">3099</span>)</span><br><span class="line">	at jvm.RuntimeOOM.main(RuntimeOOM.java:<span class="number">13</span>)</span><br></pre></td></tr></table></figure></p>
 <p>GC overhead limit exceeded这个意思是说GC时间过长啦。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sun官方说明：并行/并发回收器在GC回收时间过长时会抛出OutOfMemroyError。过长的定义是，超过<span class="number">98</span>%的时间用来做GC并且回收了不到<span class="number">2</span>%的堆内存。用来避免内存过小造成应用不能正常工作。</span><br></pre></td></tr></table></figure></p>
-</div></article><div class="pagination"><a href="/2018/10/04/jvm之垃圾收集器/" class="pagination-prev">PREV</a><span class="pagination-next">NEXT</span></div><div class="comments"></div></div><aside class="sidebar"><h3>最新文章</h3><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/ElasticSearch入门/">ElasticSearch入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/hello-world/">Hello World</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/04/jvm之垃圾收集器/">jvm之垃圾收集器</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/18/JVM-01-之java内存区域划分/">JVM_01 之java内存区域划分</a></li></ul></aside></section></div><div class="extra"></div><footer class="footer"><div class="row-flex-row limit-width vh-center"><div class="copyright"><P>© 2018 <a href="/">gosaint</P></div><div class="power"><p><a href="http://pinggod.com/">Sean Sun</a>, 
-<a href="https://hexo.io">Hexo</a>, 
-<a href="https://github.com/">GitHub</a>, 
-<a href="https://jekyllrb.com/">Jekyll</a></p></div></div></footer><script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script></body></html>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/09/18/JVM-01-之java内存区域划分/" data-id="cjmvy56uz0001xove31pkb64o" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/10/04/jvm之垃圾收集器/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          jvm之垃圾收集器
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/10/05/ElasticSearch入门/">ElasticSearch入门</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/05/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/04/jvm之垃圾收集器/">jvm之垃圾收集器</a>
+          </li>
+        
+          <li>
+            <a href="/2018/09/18/JVM-01-之java内存区域划分/">JVM_01 之java内存区域划分</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 gosaint<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
