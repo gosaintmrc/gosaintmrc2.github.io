@@ -14,7 +14,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2018/10/05/java动态代理/p1.jpg">
 <meta property="og:image" content="http://yoursite.com/2018/10/05/java动态代理/www.jpg">
-<meta property="og:updated_time" content="2018-10-06T14:16:43.386Z">
+<meta property="og:updated_time" content="2018-10-06T14:20:43.409Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java动态代理">
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;对于动态代理,这点来说我想大家都不会陌生。那么什么是动态代理呢：简而言之就是在运行期动态的生成字节码的技术。 1 存在的问题&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在说明问题之前，我们先通过如下的代码逐步演进。1234567891011public class Dog &amp;#123;	public void run()&amp;#123;		Syste">
@@ -102,19 +102,11 @@
 <p><img src="/2018/10/05/java动态代理/www.jpg" alt="p1"><br>假设我将上述的代码修改下，将测试代码中的Animal换成Dog,那么就会出现如下的错误：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Exception in thread <span class="string">"main"</span> java.lang.ClassCastException: com.sun.proxy.$Proxy0 cannot be cast to proxy.Dog</span><br><span class="line">	at proxy.TestProxy.main(TestProxy.java:<span class="number">7</span>)</span><br></pre></td></tr></table></figure>
 <p>这是因为基于java的动态代理必须要实现接口。并且此时的instance还是代理对象（proxy.Dog@6bc7c054），不是真的animal对象</p>
-<h2 id="2-基于JDK实现的动态代理"><a href="#2-基于JDK实现的动态代理" class="headerlink" title="2 基于JDK实现的动态代理"></a>2 基于JDK实现的动态代理</h2><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h2 id="Quick-Start-1"><a href="#Quick-Start-1" class="headerlink" title="Quick Start"></a>Quick Start</h2><h2 id="Quick-Start-2"><a href="#Quick-Start-2" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/05/java动态代理/" data-id="cjmxizu8r0001fcvewt4ax9ph" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/05/java动态代理/" data-id="cjmxj0wnm00032ovesjxkc0hd" class="article-share-link">Share</a>
       
       
     </footer>
