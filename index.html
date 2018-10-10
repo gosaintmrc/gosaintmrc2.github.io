@@ -96,11 +96,17 @@
 <p>&emsp;&emsp;关于上述的使用ThreadPoolExecutor默认的构造器创建任务。我在代码中明确的阐述：我要创建一个定长的线程池。因此corePoolSize和maxmumPoolSize的数目是相同的。</p>
 <ul>
 <li>1 corePoolSize 核心线程池的数目。默认的情况下，如果线程池中线程的数大于核心线程的数目，那么多出的线程为非核心线程。核心线程是在线程池中一般都会存在，及时什么也不敢。，非核心线程会根据aliveTime的指定存活时间在这个时间后会销毁。核心线程会根据allowCoreThreadTimeOut这个属性为true，那么核心线程如果不干活(闲置状态)的话，超过一定时间(时长下面参数决定)，就会被销毁掉。</li>
-<li><p>2 maximumPoolSize 线程池中线程的最大数目。对于定长的线程池而言：corePoolSize和maximumPoolSize是相等的。在上述的代码中，我创建了一个成员变量POOLSIZE=4;这个表示单个CPU下线程的数据。通过Runtime.getRuntime().availableProcessors()获取当前可用的CPU的数目。然后✖单个CPU下的线程的数目就是最终的核心线程的数目。<br>####</p>
-<p> FixedThreadPool    corePoolSize=maximumPoolSize<br> CachedThreadPool   corePoolSize=0 maximumPoolSize=Integer.MAX_VALUE<br> SingleThreadPoool corePoolSize=maximumPoolSize=1<br> ScheduledThreadPool corePoolSize自定义  maximumPoolSize=Integer.MAX_VALUE</p>
-</li>
+<li>2 maximumPoolSize 线程池中线程的最大数目。对于定长的线程池而言：corePoolSize和maximumPoolSize是相等的。在上述的代码中，我创建了一个成员变量POOLSIZE=4;这个表示单个CPU下线程的数据。通过Runtime.getRuntime().availableProcessors()获取当前可用的CPU的数目。然后✖单个CPU下的线程的数目就是最终的核心线程的数目。</li>
+</ul>
+<pre><code>FixedThreadPool    corePoolSize=maximumPoolSize 
+CachedThreadPool   corePoolSize=0 maximumPoolSize=Integer.MAX_VALUE
+SingleThreadPoool corePoolSize=maximumPoolSize=1 
+ScheduledThreadPool corePoolSize自定义  maximumPoolSize=Integer.MAX_VALUE
+</code></pre><ul>
 <li>3 keepAliveTime 这是一个空闲线程存活的时间设置。long类型。</li>
-<li>4 unit 这个参数是上述keepAliveTime的单位。枚举类型。其具体有：<br>####<br>  TimeUnit.DAYS;               天<br>  TimeUnit.HOURS;              时<br>  TimeUnit.MICROSECONDS;       微秒<br>  TimeUnit.MILLISECONDS;       毫秒<br>  TimeUnit.MINUTES;            分<br>  TimeUnit.NANOSECONDS;        纳秒<br>  TimeUnit.SECONDS;            秒</li>
+<li><p>4 unit 这个参数是上述keepAliveTime的单位。枚举类型。其具体有：</p>
+<p>  TimeUnit.DAYS;               天<br>  TimeUnit.HOURS;              时<br>  TimeUnit.MICROSECONDS;       微秒<br>  TimeUnit.MILLISECONDS;       毫秒<br>  TimeUnit.MINUTES;            分<br>  TimeUnit.NANOSECONDS;        纳秒<br>  TimeUnit.SECONDS;            秒</p>
+</li>
 <li>5 workQuene 工作队列 所有的线程都会堆积到队列中，出队之后开始执行任务。在线程池的定义中使用的是阻塞队列；阻塞队列有界队列和无界队列。有界队列可以防止资源耗尽。无界队列容易出现资源耗尽。出现OOM。</li>
 <li>6 handler 拒绝策略 就是当队列满了之后如果新添加线程，系统是如何处理的问题。关于这个问题以及上述的工作队列打算在其它文章中讲下。</li>
 <li>7 threadFactory 线程工厂，我是用的是Executors.defaultThreadFactory()。默认的线程工厂。</li>
@@ -110,7 +116,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/10/线程池使用详解/" data-id="cjn2qnity000874ved82pv5hs" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/10/线程池使用详解/" data-id="cjn2qp7lv0008swve1vdx900m" class="article-share-link">Share</a>
       
       
     </footer>
@@ -159,7 +165,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/09/spring-Bean的生命周期/" data-id="cjn2qnitu000774vedhe12u4r" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/09/spring-Bean的生命周期/" data-id="cjn2qp7lm0007swvedfaki0sq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -197,7 +203,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/08/jvm之CMS收集器和G1收集器/" data-id="cjn2qnitm000574ve9ihkpi6s" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/08/jvm之CMS收集器和G1收集器/" data-id="cjn2qp7lh0005swverfpvekab" class="article-share-link">Share</a>
       
       
     </footer>
@@ -249,7 +255,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/08/dubbo入门以及dubbo监控平台/" data-id="cjn2qnite000274vedeu5tt22" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/08/dubbo入门以及dubbo监控平台/" data-id="cjn2qp7l90002swvemrfyz8p6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -298,7 +304,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/05/java动态代理/" data-id="cjn2qnitj000474vepeq4zhkv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/05/java动态代理/" data-id="cjn2qp7lf0004swve8m9do4b4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -349,7 +355,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/05/ElasticSearch入门/" data-id="cjn2qnisz000074vei61ftxyd" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/05/ElasticSearch入门/" data-id="cjn2qp7kx0000swvez9e3oiz9" class="article-share-link">Share</a>
       
       
     </footer>
@@ -401,7 +407,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/05/hello-world/" data-id="cjn2qniti000374vehzk57rg2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/05/hello-world/" data-id="cjn2qp7ld0003swvec2g4vvo0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -451,7 +457,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/04/jvm之垃圾收集器/" data-id="cjn2qnits000674vef2ds7xth" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/04/jvm之垃圾收集器/" data-id="cjn2qp7lk0006swvemwcsu93y" class="article-share-link">Share</a>
       
       
     </footer>
@@ -509,7 +515,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/09/18/JVM-01-之java内存区域划分/" data-id="cjn2qnit9000174vev71la732" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/09/18/JVM-01-之java内存区域划分/" data-id="cjn2qp7l50001swvee6z8wc1l" class="article-share-link">Share</a>
       
       
     </footer>

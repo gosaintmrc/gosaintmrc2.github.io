@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="GoSaint Blogs">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;线程池我想大家用的也确实很多了。对我而言也确实使用过线程池，但是更多的是显式的去创建线程了实现其中的业务功能。今天翻看阿里的编程规范，关于线程池的规范，我看了之后，这才发现自己之前的编码很不规范。但是又对阿里的编码规范部分不太明白。下面是阿里编码规范中关于线程池的一些规定： #### 3. 【强制】线程资源必须通过线程池提供，不允许在应用中自行显式创建线程。说明：使用线程池">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-10-10T05:18:57.949Z">
+<meta property="og:updated_time" content="2018-10-10T05:53:42.882Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线程池使用详解">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;线程池我想大家用的也确实很多了。对我而言也确实使用过线程池，但是更多的是显式的去创建线程了实现其中的业务功能。今天翻看阿里的编程规范，关于线程池的规范，我看了之后，这才发现自己之前的编码很不规范。但是又对阿里的编码规范部分不太明白。下面是阿里编码规范中关于线程池的一些规定： #### 3. 【强制】线程资源必须通过线程池提供，不允许在应用中自行显式创建线程。说明：使用线程池">
@@ -98,11 +98,17 @@
 <p>&emsp;&emsp;关于上述的使用ThreadPoolExecutor默认的构造器创建任务。我在代码中明确的阐述：我要创建一个定长的线程池。因此corePoolSize和maxmumPoolSize的数目是相同的。</p>
 <ul>
 <li>1 corePoolSize 核心线程池的数目。默认的情况下，如果线程池中线程的数大于核心线程的数目，那么多出的线程为非核心线程。核心线程是在线程池中一般都会存在，及时什么也不敢。，非核心线程会根据aliveTime的指定存活时间在这个时间后会销毁。核心线程会根据allowCoreThreadTimeOut这个属性为true，那么核心线程如果不干活(闲置状态)的话，超过一定时间(时长下面参数决定)，就会被销毁掉。</li>
-<li><p>2 maximumPoolSize 线程池中线程的最大数目。对于定长的线程池而言：corePoolSize和maximumPoolSize是相等的。在上述的代码中，我创建了一个成员变量POOLSIZE=4;这个表示单个CPU下线程的数据。通过Runtime.getRuntime().availableProcessors()获取当前可用的CPU的数目。然后✖单个CPU下的线程的数目就是最终的核心线程的数目。<br>####</p>
-<p> FixedThreadPool    corePoolSize=maximumPoolSize<br> CachedThreadPool   corePoolSize=0 maximumPoolSize=Integer.MAX_VALUE<br> SingleThreadPoool corePoolSize=maximumPoolSize=1<br> ScheduledThreadPool corePoolSize自定义  maximumPoolSize=Integer.MAX_VALUE</p>
-</li>
+<li>2 maximumPoolSize 线程池中线程的最大数目。对于定长的线程池而言：corePoolSize和maximumPoolSize是相等的。在上述的代码中，我创建了一个成员变量POOLSIZE=4;这个表示单个CPU下线程的数据。通过Runtime.getRuntime().availableProcessors()获取当前可用的CPU的数目。然后✖单个CPU下的线程的数目就是最终的核心线程的数目。</li>
+</ul>
+<pre><code>FixedThreadPool    corePoolSize=maximumPoolSize 
+CachedThreadPool   corePoolSize=0 maximumPoolSize=Integer.MAX_VALUE
+SingleThreadPoool corePoolSize=maximumPoolSize=1 
+ScheduledThreadPool corePoolSize自定义  maximumPoolSize=Integer.MAX_VALUE
+</code></pre><ul>
 <li>3 keepAliveTime 这是一个空闲线程存活的时间设置。long类型。</li>
-<li>4 unit 这个参数是上述keepAliveTime的单位。枚举类型。其具体有：<br>####<br>  TimeUnit.DAYS;               天<br>  TimeUnit.HOURS;              时<br>  TimeUnit.MICROSECONDS;       微秒<br>  TimeUnit.MILLISECONDS;       毫秒<br>  TimeUnit.MINUTES;            分<br>  TimeUnit.NANOSECONDS;        纳秒<br>  TimeUnit.SECONDS;            秒</li>
+<li><p>4 unit 这个参数是上述keepAliveTime的单位。枚举类型。其具体有：</p>
+<p>  TimeUnit.DAYS;               天<br>  TimeUnit.HOURS;              时<br>  TimeUnit.MICROSECONDS;       微秒<br>  TimeUnit.MILLISECONDS;       毫秒<br>  TimeUnit.MINUTES;            分<br>  TimeUnit.NANOSECONDS;        纳秒<br>  TimeUnit.SECONDS;            秒</p>
+</li>
 <li>5 workQuene 工作队列 所有的线程都会堆积到队列中，出队之后开始执行任务。在线程池的定义中使用的是阻塞队列；阻塞队列有界队列和无界队列。有界队列可以防止资源耗尽。无界队列容易出现资源耗尽。出现OOM。</li>
 <li>6 handler 拒绝策略 就是当队列满了之后如果新添加线程，系统是如何处理的问题。关于这个问题以及上述的工作队列打算在其它文章中讲下。</li>
 <li>7 threadFactory 线程工厂，我是用的是Executors.defaultThreadFactory()。默认的线程工厂。</li>
@@ -112,7 +118,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/10/线程池使用详解/" data-id="cjn2qnity000874ved82pv5hs" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/10/线程池使用详解/" data-id="cjn2qp7lv0008swve1vdx900m" class="article-share-link">Share</a>
       
       
     </footer>
