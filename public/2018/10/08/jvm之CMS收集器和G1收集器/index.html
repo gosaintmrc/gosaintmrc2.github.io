@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>jvm之CMS收集器和G1收集器 | GoSaint Blogs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;其实在前面的文章我已经说过了CMS收集器。但是我自己认为我自己说的不够明确吧。在这里我打算继续谈论下这个收集器以及目前来说最为先进的垃圾收集器G1收集器。 CMS垃圾收集器&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;应该明白的是CMS垃圾收集器收集的主要是老年代。它可以和新生代垃圾收集器Serial、ParNew配合。也可以和Serial Old">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jvm之CMS收集器和G1收集器">
+<meta property="og:url" content="http://yoursite.com/2018/10/08/jvm之CMS收集器和G1收集器/index.html">
+<meta property="og:site_name" content="GoSaint Blogs">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;其实在前面的文章我已经说过了CMS收集器。但是我自己认为我自己说的不够明确吧。在这里我打算继续谈论下这个收集器以及目前来说最为先进的垃圾收集器G1收集器。 CMS垃圾收集器&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;应该明白的是CMS垃圾收集器收集的主要是老年代。它可以和新生代垃圾收集器Serial、ParNew配合。也可以和Serial Old">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-10-08T13:26:15.074Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jvm之CMS收集器和G1收集器">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;其实在前面的文章我已经说过了CMS收集器。但是我自己认为我自己说的不够明确吧。在这里我打算继续谈论下这个收集器以及目前来说最为先进的垃圾收集器G1收集器。 CMS垃圾收集器&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;应该明白的是CMS垃圾收集器收集的主要是老年代。它可以和新生代垃圾收集器Serial、ParNew配合。也可以和Serial Old">
+  
+    <link rel="alternate" href="/atom.xml" title="GoSaint Blogs" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">GoSaint Blogs</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-jvm之CMS收集器和G1收集器" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/08/jvm之CMS收集器和G1收集器/" class="article-date">
+  <time datetime="2018-10-08T13:13:36.000Z" itemprop="datePublished">2018-10-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      jvm之CMS收集器和G1收集器
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;其实在前面的文章我已经说过了CMS收集器。但是我自己认为我自己说的不够明确吧。在这里我打算继续谈论下这个收集器以及目前来说最为先进的垃圾收集器G1收集器。</p>
+<h3 id="CMS垃圾收集器"><a href="#CMS垃圾收集器" class="headerlink" title="CMS垃圾收集器"></a>CMS垃圾收集器</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;应该明白的是CMS垃圾收集器收集的主要是老年代。它可以和新生代垃圾收集器Serial、ParNew配合。也可以和Serial Old垃圾收集器配合收集老年代的垃圾。那么什么是CMS呢。就是Concurrent Mark Sweep;即并发标记清除。由此可知是并发收集的，并且使用标记清除算法。</p>
+<h3 id="G1垃圾收集器"><a href="#G1垃圾收集器" class="headerlink" title="G1垃圾收集器"></a>G1垃圾收集器</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/10/08/jvm之CMS收集器和G1收集器/" data-id="cjn2qs53100059ovekzevx8nh" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/10/09/spring-Bean的生命周期/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          spring Bean的生命周期
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/10/08/dubbo入门以及dubbo监控平台/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">dubbo入门以及dubbo监控平台</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/10/10/线程池使用详解/">线程池使用详解</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/09/spring-Bean的生命周期/">spring Bean的生命周期</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/08/jvm之CMS收集器和G1收集器/">jvm之CMS收集器和G1收集器</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/08/dubbo入门以及dubbo监控平台/">dubbo入门以及dubbo监控平台</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/05/java动态代理/">java动态代理</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 gosaint<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

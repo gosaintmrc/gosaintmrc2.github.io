@@ -62,6 +62,157 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-线程池使用详解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/10/线程池使用详解/" class="article-date">
+  <time datetime="2018-10-10T03:20:07.000Z" itemprop="datePublished">2018-10-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/10/线程池使用详解/">线程池使用详解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;线程池我想大家用的也确实很多了。对我而言也确实使用过线程池，但是更多的是显式的去创建线程了实现其中的业务功能。今天翻看阿里的编程规范，关于线程池的规范，我看了之后，这才发现自己之前的编码很不规范。但是又对阿里的编码规范部分不太明白。下面是阿里编码规范中关于线程池的一些规定：</p>
+<p>####</p>
+<pre><code>3. 【强制】线程资源必须通过线程池提供，不允许在应用中自行显式创建线程。说明：使用线程池的好处是减少在创建和销毁线程上所花的时间以及系统资源的开销，解决资源不足的问题。如果不使用线程池，有可能造成系统创建大量同类线程而导致消耗完内存或者“过度切换”的问题。
+4. 【强制】线程池不允许使用 Executors 去创建，而是通过 ThreadPoolExecutor 的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险。说明：Executors 返回的线程池对象的弊端如下：
+1）FixedThreadPool 和 SingleThreadPool:允许的请求队列长度为 Integer.MAX_VALUE，可能会堆积大量的请求，从而导致 OOM。
+2）CachedThreadPool 和 ScheduledThreadPool:允许的创建线程数量为 Integer.MAX_VALUE，可能会创建大量的线程，从而导致 OOM。
+</code></pre><p>&emsp;&emsp;针对第三点而言，这个可以理解。不允许显式的创建线程。强制使用线程池的方式。避免系统资源过度切换以及其它开销。对于第四点强制使用ThreadPoolExecutor去创建线程池。主要是Executor会默认的请求队列无限，造成大量请求的堆积。引发OOM。因此我们使用ThreadpoolExecutor来创建线程池最重要的便是这个队列的数量设置。否则和使用Executor的并没有什么区别。下面的代码是我是用了Executor的方式创建了一个定长的线程池，代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadPoolInfo</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 线程池的测试</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">		ExecutorService service = Executors.newFixedThreadPool(<span class="number">5</span>);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">15</span>; i++) &#123;</span><br><span class="line">			<span class="comment">// 向线程池提交了15次任务,每一个任务被执行了3次.总共45次</span></span><br><span class="line">			service.submit(<span class="keyword">new</span> Task());</span><br><span class="line">			System.out.println(<span class="string">"==================="</span> + i);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 关闭线程池</span></span><br><span class="line">		service.shutdown();</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Task</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">			System.out.println(Thread.currentThread().getName() + <span class="string">"-线程被调用啦"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;上面的程序我使用ExecutorService service = Executors.newFixedThreadPool(5);创建了一个线程池，数量为5.向线程池提交了15次的任务，每一个任务被提交了三次，总计45次的执行。之后我使用了ThreadpoolExecutor创建了线程池。之所以使用这种方法创建线程池处了避免OOM之外，对我而言最重要的一点是让我明白了线程池的具体工作原理以及结构组成。因此我们可以根据这种方式自定义线程池。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> threadpool;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.LinkedBlockingQueue;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ThreadPoolExecutor;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadPoolInfo2</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> POOLSIZE=<span class="number">4</span>;<span class="comment">//单个CPU下的线程的数目</span></span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">poolNews</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="comment">//Runtime.getRuntime().availableProcessors()  获取系统可用CPU的数目</span></span><br><span class="line">		<span class="keyword">int</span> corePoolSize=Runtime.getRuntime().availableProcessors()*POOLSIZE;</span><br><span class="line">		System.out.println(<span class="string">"核心线程数为"</span>+corePoolSize);</span><br><span class="line">		<span class="keyword">int</span> maximumPoolSize=corePoolSize;</span><br><span class="line">		<span class="comment">//在这里我创建的线程池为FixedThreadPool.因此corePoolSize和maximumPoolSize的值应该相同</span></span><br><span class="line">		<span class="comment">//keepAliveTime 线程保持活跃时间 </span></span><br><span class="line">		<span class="comment">//unit 为空闲线程保留的时间的单位 我设置了毫秒</span></span><br><span class="line">		<span class="keyword">long</span> keepAliveTime=<span class="number">60</span>;</span><br><span class="line">		<span class="comment">//theadFactory 默认的线程工厂</span></span><br><span class="line">		ThreadPoolExecutor executor=<span class="keyword">new</span> ThreadPoolExecutor(</span><br><span class="line">				corePoolSize, </span><br><span class="line">				maximumPoolSize, </span><br><span class="line">				keepAliveTime, </span><br><span class="line">				TimeUnit.MILLISECONDS, </span><br><span class="line">				<span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;(<span class="number">20</span>), </span><br><span class="line">				Executors.defaultThreadFactory(), </span><br><span class="line">				<span class="keyword">new</span> ThreadPoolExecutor.AbortPolicy());</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">15</span>; i++) &#123;</span><br><span class="line">			<span class="comment">// 向线程池提交了15次任务,每一个任务被执行了3次.总共45次</span></span><br><span class="line">			executor.submit(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">				<span class="meta">@Override</span></span><br><span class="line">				<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">					<span class="comment">//线程执行的任务</span></span><br><span class="line">					<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">						System.out.println(Thread.currentThread().getName() + <span class="string">"-线程被调用啦"</span>);</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;);</span><br><span class="line">			System.out.println(<span class="string">"==================="</span> + i);</span><br><span class="line">		&#125;		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">new</span> ThreadPoolInfo2().poolNews();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;关于上述的使用ThreadPoolExecutor默认的构造器创建任务。我在代码中明确的阐述：我要创建一个定长的线程池。因此corePoolSize和maxmumPoolSize的数目是相同的。</p>
+<ul>
+<li>1 corePoolSize 核心线程池的数目。默认的情况下，如果线程池中线程的数大于核心线程的数目，那么多出的线程为非核心线程。核心线程是在线程池中一般都会存在，及时什么也不敢。，非核心线程会根据aliveTime的指定存活时间在这个时间后会销毁。核心线程会根据allowCoreThreadTimeOut这个属性为true，那么核心线程如果不干活(闲置状态)的话，超过一定时间(时长下面参数决定)，就会被销毁掉。</li>
+<li>2 maximumPoolSize 线程池中线程的最大数目。对于定长的线程池而言：corePoolSize和maximumPoolSize是相等的。在上述的代码中，我创建了一个成员变量POOLSIZE=4;这个表示单个CPU下线程的数据。通过Runtime.getRuntime().availableProcessors()获取当前可用的CPU的数目。然后✖单个CPU下的线程的数目就是最终的核心线程的数目。</li>
+</ul>
+<pre><code>FixedThreadPool    corePoolSize=maximumPoolSize 
+CachedThreadPool   corePoolSize=0 maximumPoolSize=Integer.MAX_VALUE
+SingleThreadPoool corePoolSize=maximumPoolSize=1 
+ScheduledThreadPool corePoolSize自定义  maximumPoolSize=Integer.MAX_VALUE
+</code></pre><ul>
+<li>3 keepAliveTime 这是一个空闲线程存活的时间设置。long类型。</li>
+<li><p>4 unit 这个参数是上述keepAliveTime的单位。枚举类型。其具体有：</p>
+<p>  TimeUnit.DAYS;               天<br>  TimeUnit.HOURS;              时<br>  TimeUnit.MICROSECONDS;       微秒<br>  TimeUnit.MILLISECONDS;       毫秒<br>  TimeUnit.MINUTES;            分<br>  TimeUnit.NANOSECONDS;        纳秒<br>  TimeUnit.SECONDS;            秒</p>
+</li>
+<li>5 workQuene 工作队列 所有的线程都会堆积到队列中，出队之后开始执行任务。在线程池的定义中使用的是阻塞队列；阻塞队列有界队列和无界队列。有界队列可以防止资源耗尽。无界队列容易出现资源耗尽。出现OOM。</li>
+<li>6 handler 拒绝策略 就是当队列满了之后如果新添加线程，系统是如何处理的问题。关于这个问题以及上述的工作队列打算在其它文章中讲下。</li>
+<li>7 threadFactory 线程工厂，我是用的是Executors.defaultThreadFactory()。默认的线程工厂。</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>&emsp;&emsp;其实我主要在这阐述了线程池创建的第二种方式。对其参数的选用做了大略的说明。需要清楚的是：我想我们不妨在今后创建线程池的过程中使用这种方式。明确线程池的结构组成，这样可以更加清晰其中的原理。以便出现问题后可以快速定位解决。最后补充的是在多业务系统中，单一的线程池也会造成线程死锁或者线程挂起导致的线程池崩溃。最佳实践是线程池使用业务隔离、熔断机制。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/10/10/线程池使用详解/" data-id="cjn2qs53f00089oveiduowg5b" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-spring-Bean的生命周期" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/09/spring-Bean的生命周期/" class="article-date">
+  <time datetime="2018-10-09T07:22:26.000Z" itemprop="datePublished">2018-10-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/09/spring-Bean的生命周期/">spring Bean的生命周期</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;对于本人来说，Spring Bean的生命周期绝对是一个超级复杂的过程。因为它太多了我实在记不住。今天我正式的再文章中写下，算是一个记忆的过程吧。</p>
+<h3 id="BeanFactory中Bean的生命周期"><a href="#BeanFactory中Bean的生命周期" class="headerlink" title="BeanFactory中Bean的生命周期"></a>BeanFactory中Bean的生命周期</h3><p>&emsp;&emsp;我这里使用的是Spring4.x企业实战上面的例子。先行创建一个Bean。Car：代码如下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String brand;<span class="comment">//车的品牌</span></span><br><span class="line">    <span class="keyword">private</span> String color;<span class="comment">//车的颜色</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> maxSpeed;<span class="comment">//车的最大速度</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Car</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Car</span><span class="params">(<span class="keyword">final</span> String brand, <span class="keyword">final</span> String color, <span class="keyword">final</span> <span class="keyword">int</span> maxSpeed)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.brand = brand;</span><br><span class="line">        <span class="keyword">this</span>.color = color;</span><br><span class="line">        <span class="keyword">this</span>.maxSpeed = maxSpeed;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getBrand</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> brand;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBrand</span><span class="params">(<span class="keyword">final</span> String brand)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.brand = brand;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getColor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> color;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setColor</span><span class="params">(<span class="keyword">final</span> String color)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.color = color;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getMaxSpeed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> maxSpeed;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMaxSpeed</span><span class="params">(<span class="keyword">final</span> <span class="keyword">int</span> maxSpeed)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.maxSpeed = maxSpeed;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">introduce</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Car&#123;"</span> +</span><br><span class="line">                <span class="string">"brand='"</span> + brand + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">", color='"</span> + color + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">", maxSpeed="</span> + maxSpeed +</span><br><span class="line">                <span class="string">'&#125;'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;接下来需要实现四个接口：</p>
+<ul>
+<li><p>1 BeanFactoryAware接口<br>此时需要实现方法setBeanFactory(BeanFactory beanFactory)。因此需要添加成员变量BeanFactory。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> BeanFactory beanFactory;</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBeanFactory</span><span class="params">(<span class="keyword">final</span> BeanFactory beanFactory)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"调用BeanFactoryAware接口的setBeanFactory方法"</span>);</span><br><span class="line">    <span class="keyword">this</span>.beanFactory=beanFactory;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>2 BeanNameAware接口<br>此时需要实现方法setBeanName(String beanName)。因此需要添加成员变量beanName。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String beanName;</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBeanName</span><span class="params">(<span class="keyword">final</span> String beanName)</span> </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"调用BeanNameAware接口的setBeanName方法"</span>);</span><br><span class="line">    <span class="keyword">this</span>.beanName=beanName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>3 BeanNameAware接口<br>此时需要实现方法setBeanName(String beanName)。因此需要添加成员变量beanName。</p>
+<h3 id="ApplicationContext中Bean的生命周期"><a href="#ApplicationContext中Bean的生命周期" class="headerlink" title="ApplicationContext中Bean的生命周期"></a>ApplicationContext中Bean的生命周期</h3></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/10/09/spring-Bean的生命周期/" data-id="cjn2qs53500069ovektbo22d7" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-jvm之CMS收集器和G1收集器" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/08/jvm之CMS收集器和G1收集器/" class="article-date">
+  <time datetime="2018-10-08T13:13:36.000Z" itemprop="datePublished">2018-10-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/08/jvm之CMS收集器和G1收集器/">jvm之CMS收集器和G1收集器</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;其实在前面的文章我已经说过了CMS收集器。但是我自己认为我自己说的不够明确吧。在这里我打算继续谈论下这个收集器以及目前来说最为先进的垃圾收集器G1收集器。</p>
+<h3 id="CMS垃圾收集器"><a href="#CMS垃圾收集器" class="headerlink" title="CMS垃圾收集器"></a>CMS垃圾收集器</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;应该明白的是CMS垃圾收集器收集的主要是老年代。它可以和新生代垃圾收集器Serial、ParNew配合。也可以和Serial Old垃圾收集器配合收集老年代的垃圾。那么什么是CMS呢。就是Concurrent Mark Sweep;即并发标记清除。由此可知是并发收集的，并且使用标记清除算法。</p>
+<h3 id="G1垃圾收集器"><a href="#G1垃圾收集器" class="headerlink" title="G1垃圾收集器"></a>G1垃圾收集器</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/10/08/jvm之CMS收集器和G1收集器/" data-id="cjn2qs53100059ovekzevx8nh" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-dubbo入门以及dubbo监控平台" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/10/08/dubbo入门以及dubbo监控平台/" class="article-date">
@@ -104,7 +255,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/08/dubbo入门以及dubbo监控平台/" data-id="cjn031k3z0005iwve5yal9lcr" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/08/dubbo入门以及dubbo监控平台/" data-id="cjn2qs52n00029ovec1yfi05y" class="article-share-link">Share</a>
       
       
     </footer>
@@ -153,7 +304,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/05/java动态代理/" data-id="cjn031k3x0004iwve9tik3zq0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/05/java动态代理/" data-id="cjn2qs52y00049ovey25tr6sz" class="article-share-link">Share</a>
       
       
     </footer>
@@ -204,7 +355,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/05/ElasticSearch入门/" data-id="cjn031k3h0000iwve2l3dg268" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/05/ElasticSearch入门/" data-id="cjn2qs52600009oveopowh634" class="article-share-link">Share</a>
       
       
     </footer>
@@ -256,7 +407,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/05/hello-world/" data-id="cjn031k3s0002iwve7a380u8o" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/05/hello-world/" data-id="cjn2qs52v00039over8addq0v" class="article-share-link">Share</a>
       
       
     </footer>
@@ -306,7 +457,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/04/jvm之垃圾收集器/" data-id="cjn031k3v0003iwvekib10jwh" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/04/jvm之垃圾收集器/" data-id="cjn2qs53700079ovec3rcel9u" class="article-share-link">Share</a>
       
       
     </footer>
@@ -364,7 +515,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/09/18/JVM-01-之java内存区域划分/" data-id="cjn031k3o0001iwvehn73u3uo" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/09/18/JVM-01-之java内存区域划分/" data-id="cjn2qs52h00019oveyi18i8lq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -404,23 +555,23 @@
       <ul>
         
           <li>
+            <a href="/2018/10/10/线程池使用详解/">线程池使用详解</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/09/spring-Bean的生命周期/">spring Bean的生命周期</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/08/jvm之CMS收集器和G1收集器/">jvm之CMS收集器和G1收集器</a>
+          </li>
+        
+          <li>
             <a href="/2018/10/08/dubbo入门以及dubbo监控平台/">dubbo入门以及dubbo监控平台</a>
           </li>
         
           <li>
             <a href="/2018/10/05/java动态代理/">java动态代理</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/05/ElasticSearch入门/">ElasticSearch入门</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/05/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/04/jvm之垃圾收集器/">jvm之垃圾收集器</a>
           </li>
         
       </ul>
